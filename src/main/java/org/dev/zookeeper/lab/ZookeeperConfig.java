@@ -9,6 +9,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ZookeeperConfig {
 
+    /**
+     * Creates and starts a CuratorFramework client to connect to ZooKeeper.
+     *
+     * @return A configured and started CuratorFramework client instance
+     * connected to localhost:2181 with exponential backoff retry policy
+     */
     @Bean
     public CuratorFramework curatorFramework() {
         CuratorFramework client = CuratorFrameworkFactory.newClient(
