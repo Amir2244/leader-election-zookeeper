@@ -3,6 +3,7 @@ package org.dev.zookeeper.lab;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.zookeeper.ZooKeeper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,5 +25,9 @@ public class ZookeeperConfig {
         client.start();
         return client;
     }
+//    @Bean
+//    public ZooKeeper zooKeeper() throws Exception {
+//        return new ZooKeeper("localhost:2181", 3000, null);
+//    }
 }
 

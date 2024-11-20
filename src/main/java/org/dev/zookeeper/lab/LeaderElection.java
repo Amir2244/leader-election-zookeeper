@@ -3,6 +3,7 @@ package org.dev.zookeeper.lab;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.leader.LeaderSelector;
 import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter;
+import org.apache.zookeeper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -82,3 +83,92 @@ public class LeaderElection extends LeaderSelectorListenerAdapter {
         log.info("Leader election stopped");
     }
 }
+//
+//@Component
+//public class LeaderElection implements Watcher {
+//    /** Logger for this class */
+//    private static final Logger log = LoggerFactory.getLogger(LeaderElection.class);
+//    /** ZooKeeper path for election coordination */
+//    private static final String ELECTION_PATH = "/election";
+//    /** Flag indicating if this node is currently the leader */
+//    private volatile boolean isLeader = false;
+//    /** ZooKeeper client instance */
+//    private final ZooKeeper zooKeeper;
+//    /** Path of this node's election znode */
+//    private String nodePath;
+//
+//    /**
+//      * Constructs a new LeaderElection instance.
+//      * @param zooKeeper The ZooKeeper client instance
+//      */
+//    public LeaderElection(ZooKeeper zooKeeper) {
+//        this.zooKeeper = zooKeeper;
+//        initialize();
+//    }
+//
+//    /**
+//      * Initializes the leader election process by creating necessary ZooKeeper nodes.
+//      * Creates the election parent node if it doesn't exist and creates an ephemeral
+//      * sequential node for this instance.
+//      */
+//    private void initialize() {
+//        try {
+//            try {
+//                zooKeeper.create(ELECTION_PATH, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+//            } catch (KeeperException.NodeExistsException e) {
+//                log.debug("Election path already exists");
+//            }
+//
+//            nodePath = zooKeeper.create(ELECTION_PATH + "/node-", new byte[0],
+//                    ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+//            checkLeadership();
+//        } catch (Exception e) {
+//            log.error("Error in leader election", e);
+//        }
+//    }
+//
+//
+//    /**
+//      * Checks if this node should be the leader by comparing znode paths.
+//      * The node with the lowest sequential number becomes the leader.
+//      * @throws KeeperException if a ZooKeeper operation fails
+//      * @throws InterruptedException if the operation is interrupted
+//      */
+//    private void checkLeadership() throws KeeperException, InterruptedException {
+//        java.util.List<String> children = zooKeeper.getChildren(ELECTION_PATH, this);
+//        children.sort(String::compareTo);
+//
+//        String firstNode = ELECTION_PATH + "/" + children.get(0);
+//        isLeader = nodePath.equals(firstNode);
+//
+//        if (isLeader) {
+//            log.info("This node is now the leader");
+//        } else {
+//            log.info("This node is a follower");
+//        }
+//    }
+//
+//    /**
+//      * Processes ZooKeeper events.
+//      * Handles NodeChildrenChanged events to trigger leadership checks when the election state changes.
+//      * @param event The ZooKeeper event to process
+//      */
+//    @Override
+//    public void process(WatchedEvent event) {
+//        if (event.getType() == Event.EventType.NodeChildrenChanged) {
+//            try {
+//                checkLeadership();
+//            } catch (Exception e) {
+//                log.error("Error checking leadership", e);
+//            }
+//        }
+//    }
+//
+//    /**
+//      * Checks if this node is currently the leader.
+//      * @return true if this node is the leader, false otherwise
+//      */
+//    public boolean isLeader() {
+//        return isLeader;
+//    }
+//}
