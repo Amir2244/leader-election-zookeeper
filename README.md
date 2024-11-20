@@ -22,6 +22,7 @@ This project implements a simple leader election mechanism where multiple instan
 ## Technical Stack
 
 - Spring Boot
+- Spring IoC
 - Apache Curator Framework
 - Apache Zookeeper
 - Spring Web
